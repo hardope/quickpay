@@ -22,6 +22,7 @@ class UserSerializer(ModelSerializer):
             'first_name',
             'last_name',
             'wallet_balance',
+            'acc_no',
         ]
         extra_kwargs = {'password': {'write_only': True,
                                      'required': True}, 'email': {'required': True}}
