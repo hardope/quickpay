@@ -13,21 +13,15 @@ class UserProfile(User):
      
 class Transaction(models.Model):
 
-     transaction_types = (
-          ('credit', 'Credit'),
-          ('debit', 'Debit')
-     )
-
      sender = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
      receiver = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name='receiver')
      id = models.UUIDField(default=uuid4, editable=False, unique=True, primary_key=True)
      amount = models.FloatField()
-     transaction_type = models.CharField(max_length=10, choices=transaction_types, blank=False)
      created_at = models.DateTimeField(auto_now_add=True)
      additional_data = models.CharField(max_length=100, blank=True)
 
      def __str__(self):
-          return self.transaction_id
+          return f"{self.id}"
 
 class OTP(models.Model):
 

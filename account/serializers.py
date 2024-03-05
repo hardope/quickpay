@@ -76,9 +76,9 @@ class TransactionSerializer(ModelSerializer):
         model = Transaction
         fields = [
             'id',
-            'user',
+            'sender',
+            'receiver',
             'amount',
-            'transaction_type',
             'created_at',
             'additional_data',
         ]
@@ -86,10 +86,3 @@ class TransactionSerializer(ModelSerializer):
                         'id': {'read_only': True},
                         'created_at': {'read_only': True},
                         'additional_data': {'required': False}}
-    def validate(self, data):
-        if data.get('transaction_type', False):
-            if data['transaction_type'] == 'debit':
-                if data['amount'] > data['user'].wallet_balance:
-                    raise serializers.ValidationError(
-                        {'amount': 'Insufficient funds'})
-        return data
