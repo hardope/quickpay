@@ -18,7 +18,8 @@ class Transaction(models.Model):
           ('debit', 'Debit')
      )
 
-     user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
+     sender = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
+     receiver = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name='receiver')
      id = models.UUIDField(default=uuid4, editable=False, unique=True, primary_key=True)
      amount = models.FloatField()
      transaction_type = models.CharField(max_length=10, choices=transaction_types, blank=False)

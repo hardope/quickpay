@@ -6,7 +6,7 @@ from rest_framework.serializers import (
 from rest_framework import serializers
 
 from comms.activation import send_activation_mail
-from .models import UserProfile as User
+from .models import UserProfile as User, Transaction
 from django.core import exceptions
 import django.contrib.auth.password_validation as validators
 
@@ -69,3 +69,27 @@ class UserSerializer(ModelSerializer):
 class EmailResetSerializer(Serializer):
     """Email reset serializer"""
     email = EmailField()
+
+
+class TransactionSerializer(ModelSerializer):
+    class Meta:
+        model = Transaction
+        fields = [
+            'id',
+            'user',
+            'amount',
+            'transaction_type',
+            'created_at',
+            'additional_data',
+        ]
+        extra_kwargs = {'user': {'read_only': True},
+                        'id': {'read_only': True},
+                        'created_at': {'read_only': True},
+                        'additional_data': {'required': False}}
+    def validate(self, data):
+        if data.get('transaction_type', False):
+            if data['transaction_type'] == 'debit':
+                if data['amount'] > data['user'].wallet_balance:
+                    raise serializers.ValidationError(
+                        {'amount': 'Insufficient funds'})
+        return data
