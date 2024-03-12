@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QUICKPAY | Dashboard</title>
+
+     <!--============== Favicon ===============-->
+  <link rel="shortcut icon" href="/quickpay.png" type="image/x-icon" />
+    <link rel="stylesheet" href="dashboard.css">
+</head>
+<body>
+
+        <section id="content">
+            <div id="header">
+                <div>
+                    <div class="nav">
+                        <ul>
+                            <li class="nav-profile">
+                                <div class="nav-profile">
+                                    <div id="details">
+                                        <div id="balance">$ 500,000</div>
+                                        <div id="acc-no">Acc No : 0939383892</div>
+                                        <button id="topUpButton">Top Up</button>
+                                    </div>
+                                        
+                                        <div class="popupForm" id="popupForm">
+                                            <form id="paymentForm">
+                                    
+                                                
+                                                <!-- Payment form fields go here -->
+                                                <h3 class="title">Top Up Using Bank Card</h3>
+                                                <img src="card_img.png" alt="">
+                                                <input type="text" placeholder="Card Number" >
+                                                <input type="text" placeholder="Expiration" style="width: 175px !important">
+                                                <input type="text" placeholder="CVV" style="width: 175px !important">
+                                                <input type="number" placeholder="Amount">
+                                                <input type="number" placeholder="Card Pin">                                               
+                                    
+                                                <button type="submit"placeholder="CVV" style="width: 175px !important; margin-right: 20px;">Pay</button>
+                                                <button type="submit"placeholder="CVV" style="width: 175px !important" onclick="(document.getElementById('popupForm').classList.remove('active'))">Close</button>
+                                            </form>
+                                        </div>
+                            
+                            </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="content">
+                <div class="content-header">
+                    <h1>Dashboard</h1>
+                    <div><b>Welcome</b> <b id="username">User</b></div>
+                </div><br><br><br><br><br><br><br><br><br>
+                <div id="transferForm" style="display: block !important;">
+                    <form id="transferData" onsubmit="transfer(); return false;">
+            
+                        <!-- Payment form fields go here -->
+                        <h3 class="title">Transfer</h3>
+                        <img src="card_img.png" alt="">
+                        <input type="text" id="name" placeholder="Name" disabled>
+                        <input type="text" id="acc-no" maxlength="10" minlength="10" placeholder="Account Number">
+                        <input type="number" id="amount" placeholder="Amount">
+                        <input type="number" id="pin" placeholder="Payment Pin">                                               
+            
+                        <button type="submit">Pay</button>
+                    </form>
+                </div>
+                <section class="attendance">
+                    <div class="attendance-list">
+                      <h1>Recent Transactions</h1>
+                      <table class="table">
+                        <thead>
+                          <tr>
+                            <th>Name</th>
+                            <th>Date</th>
+                            <th>Amount</th>
+                          </tr>
+                        </thead>
+                        <tbody id="table-body">
+                          
+                        </tbody>
+                      </table>
+                    </div>
+                  </section>
+                </section>
+            </div>
+        <script src="scripts.js"></script>
+
+      </div>  
+    
+</body>
+</html>

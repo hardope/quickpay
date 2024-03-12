@@ -11,6 +11,9 @@ urlpatterns = [
      path('reset-password', views.PasswordResetView.as_view(), name='reset_password'),
      path('forgot-password', views.ForgotPasswordView.as_view(), name='forgot_password'),
      path('change-email', views.ChangeEmailView.as_view(), name='reset-email'),
-     path('create-transaction', views.CreateTransaction.as_view(), name='create_transactions'),
+     path('transfer', views.CreateTransaction.as_view(), name='create_transactions'),
      path('view-transactions', views.ViewTransactions.as_view(), name='view_transaction'),
+     path('get-me', views.GetMe.as_view(), name='get_me'),
+     path('set-pin', views.SetPaymentPin.as_view(), name='set_pin'),
+     path('get-user-acc', views.GetUserByAcc.as_view(), name='get_user_acc'),
 ]

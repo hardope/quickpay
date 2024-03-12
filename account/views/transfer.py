@@ -5,6 +5,8 @@ from ..serializers import TransactionSerializer
 from ..models import Transaction, UserProfile as User
 from rest_framework.permissions import IsAuthenticated
 from ..permissions import IsUserOrReadOnly
+import datetime
+from django.db.models import Q
 
 class CreateTransaction(APIView):
 
@@ -12,8 +14,43 @@ class CreateTransaction(APIView):
 
     def post(self, request):
 
+        parsed_data = request.data
+
+        print(parsed_data)
+
+        if not parsed_data.get('acc'):
+            return Response(
+                {
+                    'message': 'Receiver account number is required',
+                    'status': False,
+                    'statusCode': status.HTTP_400_BAD_REQUEST
+                },
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
+        print(type(parsed_data['acc']))
+        
+        receiver = User.objects.get(acc_no=parsed_data['acc'])
+
+        print(receiver)
+
+        if not receiver:
+            return Response(
+                {
+                    'message': 'Receiver not found',
+                    'status': False,
+                    'statusCode': status.HTTP_404_NOT_FOUND
+                },
+                status=status.HTTP_404_NOT_FOUND
+            )
+
+        parsed_data['sender'] = User.objects.get(pk=request.user.id)
+        parsed_data['receiver'] = receiver
+
         try:
             parsed_data = request.data
+
+            print(parsed_data)
 
             if not parsed_data.get('acc'):
                 return Response(
@@ -26,6 +63,8 @@ class CreateTransaction(APIView):
                 )
             
             receiver = User.objects.get(acc_no=parsed_data['acc'])
+
+            print(receiver)
 
             if not receiver:
                 return Response(
@@ -89,7 +128,7 @@ class ViewTransactions(APIView):
 
     def get(self, request):
         
-        transactions = Transaction.objects.filter(sender=request.user)
+        transactions = Transaction.objects.filter(Q(sender=request.user) | Q(receiver=request.user))
         if not transactions:
             return Response(
                 {
@@ -100,11 +139,60 @@ class ViewTransactions(APIView):
                 status=status.HTTP_404_NOT_FOUND
             )
 
-        transactions = TransactionSerializer(transactions, many=True)
+        all = []
+
+        for i in transactions:
+
+            all.append(
+                {
+                    'sender': i.sender.username,
+                    'receiver': i.receiver.username,
+                    'amount': i.amount,
+                    'created_at': datetime.datetime.strftime(i.created_at, '%Y-%m-%d'),
+                }
+            )
 
         transactions_data = {
-            'transactions': transactions.data,
+            'transactions': all,
             'status': True,
             'statusCode': status.HTTP_200_OK
         }
         return Response(transactions_data, status=status.HTTP_200_OK)
+
+class SetPaymentPin(APIView):
+
+    permission_classes = [IsAuthenticated, IsUserOrReadOnly]
+
+    def post(self, request):
+
+        try:
+            pin = request.data['pin']
+            if pin < 1000 or pin > 9999:
+                return Response(
+                    {
+                        'message': 'Invalid pin',
+                        'status': False,
+                        'statusCode': status.HTTP_400_BAD_REQUEST
+                    },
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+            user = User.objects.get(pk=request.user.id)
+            user.pin = pin
+            user.save()
+            return Response(
+                {
+                    'message': 'Pin set successfully',
+                    'status': True,
+                    'statusCode': status.HTTP_200_OK
+                },
+                status=status.HTTP_200_OK
+            )
+        except:
+            return Response(
+                {
+                    'message': 'An error occurred',
+                    'status': False,
+                    'statusCode': status.HTTP_500_INTERNAL_SERVER_ERROR
+                },
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )

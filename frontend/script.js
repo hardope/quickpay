@@ -50,8 +50,8 @@ function login() {
     .then((response) => response.json())
     .then((data) => {
       if (data["status"] === true) {
-        home.classList.remove("show")
-        localStorage.setItem("token", data['jwt']['access']);
+        localStorage.setItem("quickpay-token", data['jwt']['access']['token']);
+        window.location.href = "dashboard.html";
       } else {
         alert("Invalid username or password");
       }
@@ -89,9 +89,13 @@ function signup() {
     .then((data) => {
       if (data["status"] === true) {
         home.classList.remove("show")
+        alert("Account created successfully");
+      } else {
+        alert(data['errors'][0]);
       }
     })
     .catch((error) => {
+      alert('An error occured')
       console.error("Error:", error);
     });
 

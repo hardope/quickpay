@@ -71,3 +71,36 @@ class OneUser(APIView):
                     'statusCode': status.HTTP_204_NO_CONTENT,
                },
                status=status.HTTP_204_NO_CONTENT)
+
+class GetMe(APIView):
+
+     permission_classes = [IsAuthenticated]
+
+     def get(self, request):
+          serializer = UserSerializer(User.objects.get(id=request.user.id), context={'request': request})
+          return Response(
+               {
+                    'data': serializer.data,
+                    'message': 'User retrieved successfully',
+                    'status': True,
+                    'statusCode': status.HTTP_200_OK,
+               },
+               status=status.HTTP_200_OK
+          )
+     
+class GetUserByAcc(APIView):
+
+     permission_classes = [IsAuthenticated]
+
+     def get(self, request, acc_no):
+          user = User.objects.get(acc_no=acc_no)
+          serializer = UserSerializer(user, context={'request': request})
+          return Response(
+               {
+                    'data': serializer.data,
+                    'message': 'User retrieved successfully',
+                    'status': True,
+                    'statusCode': status.HTTP_200_OK,
+               },
+               status=status.HTTP_200_OK
+          )

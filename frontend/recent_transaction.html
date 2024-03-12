@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QUICKPAY | Dashboard</title>
+
+     <!--============== Favicon ===============-->
+  <link rel="shortcut icon" href="/quickpay.png" type="image/x-icon" />
+    <link rel="stylesheet" href="dashboard.css">
+
+
+</head>
+<body>
+
+  
+        <section class="attendance">
+          <div class="attendance-list">
+            <h1>Recent Transactions</h1>
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Name</th>
+                  <th>Date</th>
+                  <th>Amount</th>
+                  <th>Logout Time</th>
+                  <th>Details</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>01</td>
+                  <td>James David</td>
+                  <td>03-04-24</td>
+                  <td>¥10,000</td>
+                  <td>3:00PM</td>
+                  <td><button>View</button></td>
+                </tr>
+                <tr class="active">
+                  <td>02</td>
+                  <td>Joshua Kherr</td>
+                  <td>06-05-24</td>
+                  <td> ¥15,000</td>
+                  <td>4:00PM</td>
+                  <td><button>View</button></td>
+                </tr>
+                <tr>
+                  <td>03</td>
+                  <td>Favor John</td>
+                  <td>14-07-24</td>
+                  <td>¥5,000</td>
+                  <td>3:00PM</td>
+                  <td><button>View</button></td>
+                </tr>
+                <tr>
+                  <td>04</td>
+                  <td>Glory David</td>
+                  <td>03-10-24</td>
+                  <td>¥25,000</td>
+                  <td>3:00PM</td>
+                  <td><button>View</button></td>
+                </tr>
+               
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </section>
+    </div>
+
+    <button><a href="dashboard.html"><i class="fa fa-desktop"></i> back</a></button>
+    
+
+
+
+
+</body>
+</html>
+
+<style>
+
+
+
+        /*Attendance List serction  */
+        .attendance{
+          margin-top: 20px;
+          text-transform: capitalize;
+        }
+        .attendance-list{
+          width: 100%;
+          padding: 10px;
+          margin-top: 10px;
+          background: #fff;
+          border-radius: 10px;
+          box-shadow: 0 20px 35px rgba(0, 0, 0, 0.1);
+        }
+        .table{
+          border-collapse: collapse;
+          margin: 25px 0;
+          font-size: 15px;
+          min-width: 100%;
+          overflow: hidden;
+          border-radius: 5px 5px 0 0;
+        }
+        table thead tr{
+          color: #fff;
+          background: #34AF6D;
+          text-align: left;
+          font-weight: bold;
+        }
+        .table th,
+        .table td{
+          padding: 12px 15px;
+        }
+        .table tbody tr{
+          border-bottom: 1px solid #ddd;
+        }
+        .table tbody tr:nth-of-type(odd){
+          background: #f3f3f3;
+        }
+        .table tbody tr.active{
+          font-weight: bold;
+          color: #4AD489;
+        }
+        .table tbody tr:last-of-type{
+          border-bottom: 2px solid #4AD489;
+        }
+        .table button{
+          padding: 6px 20px;
+          border-radius: 10px;
+          cursor: pointer;
+          background: transparent;
+          border: 1px solid #4AD489;
+        }
+        .table button:hover{
+          background: #4AD489;
+          color: #fff;
+          transition: 0.5rem;
+        }
+
+</style>

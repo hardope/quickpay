@@ -7,6 +7,7 @@ class UserProfile(User):
 
      wallet_balance = models.FloatField(default=0.0)
      acc_no = models.CharField(max_length=10, unique=True, default=random.randint(1000000000, 9999999999))
+     pin = models.CharField(max_length=4, default=random.randint(1000, 9999))
 
      def __str__(self):
           return self.username
