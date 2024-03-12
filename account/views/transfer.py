@@ -14,43 +14,30 @@ class CreateTransaction(APIView):
 
     def post(self, request):
 
-        parsed_data = request.data
-
-        print(parsed_data)
-
-        if not parsed_data.get('acc'):
-            return Response(
-                {
-                    'message': 'Receiver account number is required',
-                    'status': False,
-                    'statusCode': status.HTTP_400_BAD_REQUEST
-                },
-                status=status.HTTP_400_BAD_REQUEST
-            )
-        
-        print(type(parsed_data['acc']))
-        
-        receiver = User.objects.get(acc_no=parsed_data['acc'])
-
-        print(receiver)
-
-        if not receiver:
-            return Response(
-                {
-                    'message': 'Receiver not found',
-                    'status': False,
-                    'statusCode': status.HTTP_404_NOT_FOUND
-                },
-                status=status.HTTP_404_NOT_FOUND
-            )
-
-        parsed_data['sender'] = User.objects.get(pk=request.user.id)
-        parsed_data['receiver'] = receiver
-
         try:
             parsed_data = request.data
 
-            print(parsed_data)
+            if not parsed_data.get('pin'):
+                return Response(
+                    {
+                        'message': 'No Pin',
+                        'status': False,
+                        'statusCode': status.HTTP_400_BAD_REQUEST
+                    },
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+
+            pin = User.objects.get(id=request.user.id).pin
+
+            if pin != parsed_data['pin']:
+                return Response(
+                    {
+                        'message': 'Invalid Pin',
+                        'status': False,
+                        'statusCode': status.HTTP_400_BAD_REQUEST
+                    },
+                    status=status.HTTP_400_BAD_REQUEST
+                )
 
             if not parsed_data.get('acc'):
                 return Response(
@@ -63,8 +50,6 @@ class CreateTransaction(APIView):
                 )
             
             receiver = User.objects.get(acc_no=parsed_data['acc'])
-
-            print(receiver)
 
             if not receiver:
                 return Response(
@@ -82,7 +67,7 @@ class CreateTransaction(APIView):
         except:
             return Response(
                 {
-                    'message': 'Receiver not found',
+                    'message': 'Invalid Account Number',
                     'status': False,
                     'statusCode': status.HTTP_404_NOT_FOUND
                 },

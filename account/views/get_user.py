@@ -92,15 +92,18 @@ class GetUserByAcc(APIView):
 
      permission_classes = [IsAuthenticated]
 
-     def get(self, request, acc_no):
-          user = User.objects.get(acc_no=acc_no)
-          serializer = UserSerializer(user, context={'request': request})
-          return Response(
-               {
-                    'data': serializer.data,
-                    'message': 'User retrieved successfully',
-                    'status': True,
-                    'statusCode': status.HTTP_200_OK,
-               },
-               status=status.HTTP_200_OK
-          )
+     def get(self, request, acc):
+          try:
+               user = User.objects.get(acc_no=acc)
+               serializer = UserSerializer(user, context={'request': request})
+               return Response(
+                    {
+                         'data': serializer.data,
+                         'message': 'User retrieved successfully',
+                         'status': True,
+                         'statusCode': status.HTTP_200_OK,
+                    },
+                    status=status.HTTP_200_OK
+               )
+          except:
+               return Response(status=status.HTTP_404_NOT_FOUND)

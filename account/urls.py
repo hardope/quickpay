@@ -15,5 +15,5 @@ urlpatterns = [
      path('view-transactions', views.ViewTransactions.as_view(), name='view_transaction'),
      path('get-me', views.GetMe.as_view(), name='get_me'),
      path('set-pin', views.SetPaymentPin.as_view(), name='set_pin'),
-     path('get-user-acc', views.GetUserByAcc.as_view(), name='get_user_acc'),
+     path('get-user-acc/<str:acc>', views.GetUserByAcc.as_view(), name='get_user_acc'),
 ]

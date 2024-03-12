@@ -35,6 +35,33 @@ document.addEventListener('DOMContentLoaded', function() {
 
     mytoken = localStorage.getItem('quickpay-token');
 
+    document.getElementById('receiver-no').addEventListener('keyup', function() {
+
+        let value = dom.getElementById('receiver-no').value
+
+        if (value.length == 10) {
+
+            let request = new XMLHttpRequest();
+            request.open('GET', host + '/account/get-user-acc/' + value, true);
+            request.setRequestHeader('Content-Type', 'application/json');
+            request.setRequestHeader('Authorization', 'Bearer ' + mytoken);
+            
+            request.onload = function() {
+                if (request.status == 200) {
+                    user = JSON.parse(request.response)['data']
+                    dom.getElementById('name').value = `${user['username']} - ${user['first_name']} ${user['last_name']}`
+                } else {
+                    alert('Invalid Account Number')
+                    dom.getElementById('name').value = ""
+                    console.error('Error fetching account information:', request.status);
+                }
+            };
+            
+            request.send();
+        }
+    });
+    
+
     if (mytoken) {
         fetch(host + "/account/get-me", {
             method: "GET",
@@ -74,6 +101,11 @@ document.addEventListener('DOMContentLoaded', function() {
             dom.getElementById('table-body').append('Your Recent Transactions will appear here')
         } else {
             for (let i = 0; i < transactions.length; i++) {
+
+                if (i > 7) {
+                    break
+                }
+
                 let sender = transactions[i]['sender'];
                 let receiver = transactions[i]['receiver'];
                 let created_at = transactions[i]['created_at'];
@@ -104,10 +136,9 @@ document.addEventListener('DOMContentLoaded', function() {
 function transfer() {
 
     const host = "http://localhost:8000";
-    const acc_no = dom.getElementById('acc-no').innerHTML
+    const acc_no = dom.getElementById('receiver-no').value
     const amount = dom.getElementById('amount').value;
-
-    console.log(acc_no, amount, mytoken);
+    const pin = dom.getElementById('pin').value;
 
     let request = new XMLHttpRequest();
     request.open('POST', host + '/account/transfer', true);
@@ -115,16 +146,20 @@ function transfer() {
     request.setRequestHeader('Authorization', 'Bearer ' + mytoken);
     request.send(JSON.stringify({
         "acc": acc_no,
-        "amount": amount
+        "amount": amount,
+        "pin": pin
     }));
 
-    request.DONE = function() {
-        if (request.status == 200) {
-            alert('Transfer Successful');
-            window.location.href = "dashboard.html";
+    request.onload = function() {
+        if (request.status === 200) {
+            // Reset the form
+            document.getElementById("reciever-no").value = ""
+            document.getElementById("pin").value = ""
+            document.getElementById("amount").value = ""
+            window.location.href = window.location.href +  `?` 
         } else {
-            console.log(request.response);
-            alert('Transfer Failed');
+            let data = JSON.parse(request.response);
+            alert(data.message);
         }
-    }
+    };
 }
