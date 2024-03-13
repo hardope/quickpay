@@ -22,8 +22,8 @@
                                         <div id="balance">$ 500,000</div>
                                         <div id="acc-no">Acc No : 0939383892</div>
                                         <button id="topUpButton">Top Up</button>
+                                        <button id="updateButton" onclick="openUpdateForm()">Update PIN</button>
                                     </div>
-                                        
                                         <div class="popupForm" id="popupForm">
                                             <form id="paymentForm">
                                     
@@ -67,6 +67,16 @@
                         <input type="number" id="pin" placeholder="Payment Pin">                                               
             
                         <button type="submit">Pay</button>
+                    </form>
+                </div>
+                <div class="popupForm" id="updateForm">
+                    <form id="updateUserData">
+                        <h3 class="title">Change Payment PIN</h3>
+                        <img src="https://st.depositphotos.com/3058647/4771/v/450/depositphotos_47719601-stock-illustration-lock-icon.jpg" alt="Lock Icon" width="15%" style="border-radius: 15px;">
+                        <input type="text" id="newPin" placeholder="New PIN (4 digits)" maxlength=4 minlength=4>
+                        <input type="password" id="pinUpdatePassword" placeholder="Password">
+                        <button type="submit" style="margin-right: 30px;">Update</button>
+                        <button type="button" onclick="closeForm('updateForm')">Close</button>
                     </form>
                 </div>
                 <section class="attendance">

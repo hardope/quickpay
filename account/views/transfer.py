@@ -7,6 +7,7 @@ from rest_framework.permissions import IsAuthenticated
 from ..permissions import IsUserOrReadOnly
 import datetime
 from django.db.models import Q
+from django.contrib.auth import authenticate
 
 class CreateTransaction(APIView):
 
@@ -151,7 +152,9 @@ class SetPaymentPin(APIView):
     def post(self, request):
 
         try:
-            pin = request.data['pin']
+            print(request.data['pin'])
+
+            pin = int(request.data['pin'])
             if pin < 1000 or pin > 9999:
                 return Response(
                     {
@@ -161,6 +164,30 @@ class SetPaymentPin(APIView):
                     },
                     status=status.HTTP_400_BAD_REQUEST
                 )
+
+            print(request.data.get('password'))
+
+            if not(request.data.get('password')):
+                return Response(
+                    {
+                        'message': 'Password required',
+                        'status': False,
+                        'statusCode': status.HTTP_400_BAD_REQUEST
+                    },
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+
+            user = authenticate(username=request.user.username, password=request.data['password'])
+            if not user:
+                return Response(
+                    {
+                        'message': 'Invalid password',
+                        'status': False,
+                        'statusCode': status.HTTP_400_BAD_REQUEST
+                    },
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+
             user = User.objects.get(pk=request.user.id)
             user.pin = pin
             user.save()

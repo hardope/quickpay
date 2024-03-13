@@ -35,6 +35,33 @@ document.addEventListener('DOMContentLoaded', function() {
 
     mytoken = localStorage.getItem('quickpay-token');
 
+    document.getElementById('updateUserData').addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        // Get values from the form
+        var newPin = document.getElementById('newPin').value;
+        var password = document.getElementById('pinUpdatePassword').value;
+
+        let request = new XMLHttpRequest();
+        request.open('POST', host + '/account/set-pin', true);
+        request.setRequestHeader('Content-Type', 'application/json');
+        request.setRequestHeader('Authorization', 'Bearer ' + mytoken);
+        request.send(JSON.stringify({
+            "password": password,
+            "pin": newPin
+        }));
+
+        request.onload = function() {
+            if (request.status === 200) {
+                alert('Pin Updated Successfully');
+                document.getElementById('updateForm').classList.remove('active');
+            } else {
+                alert('Invalid Password');
+            }
+        }
+    });
+
+
     document.getElementById('receiver-no').addEventListener('keyup', function() {
 
         let value = dom.getElementById('receiver-no').value
@@ -53,7 +80,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 } else {
                     alert('Invalid Account Number')
                     dom.getElementById('name').value = ""
-                    console.error('Error fetching account information:', request.status);
                 }
             };
             
@@ -162,4 +188,12 @@ function transfer() {
             alert(data.message);
         }
     };
+}
+
+function openUpdateForm() {
+    document.getElementById('updateForm').classList.add('active');
+}
+
+function closeForm(formId) {
+    document.getElementById(formId).classList.remove('active');
 }

@@ -38,11 +38,11 @@ a {
 #details div {
     padding: 7px;
 }
-#topUpButton {
+#topUpButton, #updateButton {
     height: 44px;
     font-size: small;
     text-align: center;
-    padding: 2px;
+    padding: 2px 2px 2px 2px;
     border-radius: 10px;
 }
 #content {
