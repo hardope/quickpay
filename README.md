@@ -28,7 +28,7 @@ Demo Finance Web app.
 * Activate Virtual Environment
 	```bash
 		# For Linux and MacOS
-		$ source vemv/bin/activate
+		$ source venv/bin/activate
 
 		# For windows
 		$ .\venv\Scripts\activate.bat
